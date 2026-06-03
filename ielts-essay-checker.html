@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IELTS Task 2 — Essay Checker</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #2F4156;
+    --teal: #567C8D;
+    --sky: #C8D9E6;
+    --beige: #F5EFEB;
+    --white: #FFFFFF;
+    --sky-light: #dce8f0;
+    --navy-dark: #1e2d3d;
+    --teal-dark: #3d5f6e;
+    --text-on-navy: #dce8f0;
+    --text-on-teal: #e8f0f5;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--beige);
+    color: var(--navy);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--navy);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 68px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid rgba(200,217,230,0.15);
+  }
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--white);
+    letter-spacing: -0.01em;
+  }
+  .logo span { color: var(--sky); }
+  .header-badge {
+    background: var(--teal);
+    color: var(--text-on-teal);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 100px;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 100%);
+    color: white;
+    text-align: center;
+    padding: 3.5rem 2rem 3rem;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+  }
+  .hero p {
+    font-size: 1rem;
+    opacity: 0.82;
+    max-width: 540px;
+    margin: 0 auto 1.8rem;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    flex-wrap: wrap;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--sky);
+    display: block;
+  }
+  .stat-label { font-size: 0.78rem; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.08em; }
+
+  /* MAIN LAYOUT */
+  .container { max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.5rem; }
+
+  /* TOPIC SECTION */
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    color: var(--navy);
+    margin-bottom: 0.3rem;
+  }
+  .section-sub { font-size: 0.85rem; color: var(--teal); margin-bottom: 1.5rem; font-weight: 400; }
+
+  .topics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .topic-card {
+    background: var(--white);
+    border: 1.5px solid var(--sky);
+    border-radius: 14px;
+    padding: 1.25rem 1.4rem;
+    cursor: pointer;
+    transition: all 0.22s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .topic-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: var(--sky);
+    transition: background 0.2s;
+  }
+  .topic-card:hover {
+    border-color: var(--teal);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(47,65,86,0.1);
+  }
+  .topic-card:hover::before { background: var(--teal); }
+  .topic-card.selected {
+    border-color: var(--navy);
+    background: #f0f5f9;
+    box-shadow: 0 6px 20px rgba(47,65,86,0.14);
+  }
+  .topic-card.selected::before { background: var(--navy); }
+
+  .topic-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 3px 10px;
+    border-radius: 100px;
+    margin-bottom: 0.6rem;
+  }
+  .tag-social { background: #dce8f0; color: var(--teal-dark); }
+  .tag-technology { background: #e8edf2; color: var(--navy); }
+  .tag-environment { background: #e0ede8; color: #2d5a42; }
+  .tag-education { background: #ede8e0; color: #5a4a2d; }
+  .tag-health { background: #ece0e0; color: #5a2d2d; }
+  .tag-economy { background: #e0e4ed; color: #2d3a5a; }
+
+  .topic-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1.45;
+    margin-bottom: 0.5rem;
+  }
+  .topic-desc {
+    font-size: 0.78rem;
+    color: var(--teal);
+    line-height: 1.5;
+  }
+  .topic-check {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    width: 22px; height: 22px;
+    background: var(--navy);
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 12px;
+  }
+  .topic-card.selected .topic-check { display: flex; }
+
+  /* GENERATE MORE */
+  .generate-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--navy);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    margin-bottom: 2.5rem;
+  }
+  .generate-btn:hover { background: var(--teal); transform: translateY(-1px); }
+  .generate-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  .spin { animation: spin 0.8s linear infinite; display: inline-block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* WRITING AREA */
+  .writing-panel {
+    background: var(--white);
+    border-radius: 18px;
+    border: 1.5px solid var(--sky);
+    overflow: hidden;
+    margin-bottom: 2rem;
+    display: none;
+  }
+  .writing-panel.active { display: block; }
+
+  .writing-header {
+    background: var(--navy);
+    color: white;
+    padding: 1.2rem 1.6rem;
+  }
+  .writing-header h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.4rem;
+  }
+  .writing-header p {
+    font-size: 0.8rem;
+    opacity: 0.7;
+    line-height: 1.5;
+  }
+
+  .prompt-box {
+    background: #f0f5f9;
+    border-bottom: 1px solid var(--sky);
+    padding: 1.2rem 1.6rem;
+  }
+  .prompt-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--teal);
+    margin-bottom: 0.5rem;
+  }
+  .prompt-text {
+    font-size: 0.95rem;
+    color: var(--navy);
+    line-height: 1.65;
+    font-style: italic;
+  }
+
+  .essay-textarea {
+    width: 100%;
+    min-height: 280px;
+    padding: 1.4rem 1.6rem;
+    border: none;
+    outline: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: var(--navy);
+    resize: vertical;
+    background: white;
+  }
+
+  .writing-footer {
+    padding: 1rem 1.6rem;
+    border-top: 1px solid var(--sky);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .word-count {
+    font-size: 0.82rem;
+    color: var(--teal);
+  }
+  .word-count span { font-weight: 600; color: var(--navy); }
+  .wc-warning { color: #c0392b; }
+  .wc-ok { color: #27ae60; }
+
+  .check-btn {
+    background: var(--teal);
+    color: white;
+    border: none;
+    padding: 0.7rem 1.8rem;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .check-btn:hover { background: var(--navy); transform: translateY(-1px); }
+  .check-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  /* RESULTS PANEL */
+  .results-panel {
+    background: var(--white);
+    border-radius: 18px;
+    border: 1.5px solid var(--sky);
+    overflow: hidden;
+    display: none;
+    animation: fadeUp 0.4s ease;
+  }
+  .results-panel.active { display: block; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+  .results-header {
+    background: var(--teal);
+    padding: 1.4rem 1.8rem;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .results-header h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; }
+
+  .band-display {
+    text-align: center;
+  }
+  .band-score {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1;
+    color: white;
+  }
+  .band-label { font-size: 0.72rem; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.1em; }
+
+  .score-breakdown {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1px;
+    background: var(--sky);
+    border-bottom: 1px solid var(--sky);
+  }
+  .score-item {
+    background: white;
+    padding: 1.1rem 1.4rem;
+    text-align: center;
+  }
+  .score-item-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: var(--teal);
+    font-weight: 600;
+  }
+  .score-item-label { font-size: 0.75rem; color: var(--teal); text-transform: uppercase; letter-spacing: 0.07em; margin-top: 0.2rem; }
+  .score-item-name { font-size: 0.82rem; color: var(--navy); font-weight: 500; margin-top: 0.1rem; }
+
+  .feedback-body { padding: 1.6rem 1.8rem; }
+
+  .feedback-section { margin-bottom: 1.8rem; }
+  .feedback-section:last-child { margin-bottom: 0; }
+
+  .feedback-title {
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--teal);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .feedback-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--sky);
+  }
+
+  .feedback-text {
+    font-size: 0.92rem;
+    color: var(--navy);
+    line-height: 1.75;
+  }
+
+  .error-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+  .error-item {
+    background: #fdf5f5;
+    border-left: 3px solid #c0392b;
+    border-radius: 0 8px 8px 0;
+    padding: 0.75rem 1rem;
+  }
+  .error-wrong { font-size: 0.82rem; color: #c0392b; text-decoration: line-through; margin-bottom: 0.2rem; }
+  .error-right { font-size: 0.85rem; color: var(--navy); font-weight: 500; margin-bottom: 0.25rem; }
+  .error-why { font-size: 0.78rem; color: var(--teal); }
+
+  .strength-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .strength-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    font-size: 0.88rem;
+    color: var(--navy);
+    line-height: 1.5;
+  }
+  .strength-dot {
+    width: 8px; height: 8px;
+    background: var(--teal);
+    border-radius: 50%;
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+
+  .improve-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .improve-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    font-size: 0.88rem;
+    color: var(--navy);
+    line-height: 1.5;
+  }
+  .improve-dot {
+    width: 8px; height: 8px;
+    background: #e67e22;
+    border-radius: 50%;
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+
+  /* Loading overlay */
+  .loading-overlay {
+    padding: 3rem;
+    text-align: center;
+    display: none;
+  }
+  .loading-overlay.active { display: block; }
+  .loading-spinner {
+    width: 48px; height: 48px;
+    border: 3px solid var(--sky);
+    border-top-color: var(--teal);
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+    margin: 0 auto 1rem;
+  }
+  .loading-text { font-size: 0.9rem; color: var(--teal); }
+  .loading-sub { font-size: 0.78rem; color: #9aafbe; margin-top: 0.3rem; }
+
+  .error-msg {
+    background: #fdf5f5;
+    border: 1px solid #f5c6c6;
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    color: #c0392b;
+    font-size: 0.88rem;
+    margin: 1rem 1.8rem;
+    display: none;
+  }
+  .error-msg.active { display: block; }
+
+  /* Responsive */
+  @media(max-width: 600px) {
+    .hero { padding: 2.5rem 1.2rem 2rem; }
+    .hero-stats { gap: 1.5rem; }
+    .container { padding: 1.5rem 1rem; }
+    .topics-grid { grid-template-columns: 1fr; }
+    .score-breakdown { grid-template-columns: repeat(2, 1fr); }
+    .results-header { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">IELTS<span>Ace</span></div>
+  <div class="header-badge">Task 2 Checker</div>
+</header>
+
+<div class="hero">
+  <h1>Master IELTS Writing<br>Task 2</h1>
+  <p>Choose a topic, write your essay, and get instant AI feedback with a detailed band score breakdown.</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num">∞</span><span class="stat-label">Topics</span></div>
+    <div class="stat"><span class="stat-num">4</span><span class="stat-label">Criteria</span></div>
+    <div class="stat"><span class="stat-num">9.0</span><span class="stat-label">Max Band</span></div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="section-title">Choose a Topic</div>
+  <div class="section-sub">Select any topic below — or generate new ones</div>
+
+  <div class="topics-grid" id="topicsGrid"></div>
+
+  <button class="generate-btn" id="generateBtn" onclick="generateTopics()">
+    <span id="generateIcon">↻</span> Generate New Topics
+  </button>
+
+  <div class="writing-panel" id="writingPanel">
+    <div class="writing-header">
+      <h3>Write Your Essay</h3>
+      <p>Aim for 250–300 words. Address the question fully. Structure: intro → body × 2 → conclusion.</p>
+    </div>
+    <div class="prompt-box">
+      <div class="prompt-label">Your Prompt</div>
+      <div class="prompt-text" id="selectedPrompt"></div>
+    </div>
+    <textarea class="essay-textarea" id="essayArea" placeholder="Begin your essay here…&#10;&#10;Tip: Start with a clear introduction that paraphrases the question and states your position." oninput="updateWordCount()"></textarea>
+    <div class="writing-footer">
+      <div class="word-count">Words: <span id="wordCount" class="wc-warning">0</span> / 250 minimum</div>
+      <button class="check-btn" id="checkBtn" onclick="checkEssay()">
+        ✦ Check My Essay
+      </button>
+    </div>
+  </div>
+
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Analysing your essay…</div>
+    <div class="loading-sub">Checking grammar, coherence, vocabulary, and task achievement</div>
+  </div>
+
+  <div class="error-msg" id="errorMsg"></div>
+
+  <div class="results-panel" id="resultsPanel">
+    <div class="results-header">
+      <h3>Essay Feedback</h3>
+      <div class="band-display">
+        <div class="band-score" id="bandScore">—</div>
+        <div class="band-label">Overall Band</div>
+      </div>
+    </div>
+    <div class="score-breakdown" id="scoreBreakdown"></div>
+    <div class="feedback-body" id="feedbackBody"></div>
+  </div>
+</div>
+
+<script>
+const TOPIC_POOL = [
+  { tag: "technology", tag_label: "Technology", title: "Social media and loneliness", prompt: "Many people believe that social media has increased feelings of loneliness and isolation in modern society. To what extent do you agree or disagree with this view? Give reasons for your answer and include any relevant examples from your own knowledge or experience." },
+  { tag: "education", tag_label: "Education", title: "University education: right or privilege?", prompt: "Some people think that university education should be free for all students, while others believe that students should pay tuition fees. Discuss both views and give your own opinion." },
+  { tag: "environment", tag_label: "Environment", title: "Individual vs government action on climate", prompt: "Some people argue that individuals can do very little to address climate change and that it is the responsibility of governments and large corporations to take action. To what extent do you agree or disagree?" },
+  { tag: "social", tag_label: "Society", title: "Working from home: benefits and drawbacks", prompt: "The rise of remote working has changed the nature of employment significantly. Discuss the advantages and disadvantages of working from home for both employees and employers." },
+  { tag: "health", tag_label: "Health", title: "Junk food advertising and children", prompt: "Many governments are considering banning advertisements for unhealthy food and drinks aimed at children. Do you think this is a positive or negative development? Give reasons for your answer." },
+  { tag: "economy", tag_label: "Economy", title: "Tourism: economic benefit vs cultural harm", prompt: "International tourism has brought enormous economic benefits to many countries, but it has also had a negative impact on local cultures and environments. Do you think the benefits of tourism outweigh the disadvantages?" },
+  { tag: "technology", tag_label: "Technology", title: "Artificial intelligence in the workplace", prompt: "Artificial intelligence and automation are increasingly replacing human workers in many industries. Some people view this as a positive development, while others see it as a serious threat. Discuss both views and give your opinion." },
+  { tag: "education", tag_label: "Education", title: "Children and foreign languages", prompt: "Some experts believe that children should start learning a foreign language at primary school rather than secondary school. To what extent do you agree with this view?" },
+  { tag: "social", tag_label: "Society", title: "Ageing populations: causes and solutions", prompt: "In many developed countries, the average age of the population is increasing. What are the causes of an ageing population and what problems might this cause for society? What measures could be taken to address these issues?" },
+  { tag: "environment", tag_label: "Environment", title: "Renewable energy transition", prompt: "Some people think that developed countries have a responsibility to help developing nations switch from fossil fuels to renewable energy. To what extent do you agree or disagree with this opinion?" },
+  { tag: "health", tag_label: "Health", title: "Mental health in the workplace", prompt: "Mental health issues are becoming increasingly common among employees. What are the causes of this trend, and what can employers and governments do to address the problem?" },
+  { tag: "economy", tag_label: "Economy", title: "Globalisation and small businesses", prompt: "Globalisation has made it increasingly difficult for small local businesses to compete with large multinational companies. What are the effects of this trend, and what can be done to support small businesses?" },
+  { tag: "technology", tag_label: "Technology", title: "Online privacy vs security", prompt: "Governments and companies collect large amounts of data about individuals. Some argue this is necessary for security and improved services, while others believe it is an invasion of privacy. Discuss both views and give your opinion." },
+  { tag: "social", tag_label: "Society", title: "Gender equality in leadership roles", prompt: "Despite advances in gender equality, women remain underrepresented in senior leadership positions in many fields. What are the main causes of this problem, and what measures could help to address it?" },
+  { tag: "education", tag_label: "Education", title: "Gap years before university", prompt: "Some young people choose to take a gap year between finishing school and starting university. Do the advantages of taking a gap year outweigh the disadvantages?" },
+  { tag: "health", tag_label: "Health", title: "Exercise as part of the school curriculum", prompt: "Some people believe that physical education and sport should be compulsory in all schools. Others argue that children should be free to choose their own activities. Discuss both views and give your opinion." },
+  { tag: "environment", tag_label: "Environment", title: "Plastic pollution and consumer responsibility", prompt: "Plastic pollution is one of the greatest environmental challenges of our time. Some believe that individual consumers are mainly responsible for this problem. Others argue that producers and governments must take the lead. To what extent do you agree that individuals are primarily responsible?" },
+  { tag: "economy", tag_label: "Economy", title: "Universal basic income", prompt: "Some economists propose introducing a universal basic income, where every citizen receives a fixed monthly payment from the government regardless of employment status. Do you think the advantages of this policy outweigh its disadvantages?" },
+  { tag: "technology", tag_label: "Technology", title: "Self-driving vehicles and public safety", prompt: "Self-driving cars and trucks are expected to become common within the next decade. Do you think this is a positive or negative development for society? Give reasons and examples to support your view." },
+  { tag: "social", tag_label: "Society", title: "Capital punishment: justified or not?", prompt: "Some countries still use capital punishment for the most serious crimes. Others have abolished it entirely. Discuss the arguments for and against the use of the death penalty and give your own opinion." },
+  { tag: "education", tag_label: "Education", title: "Online learning vs traditional classrooms", prompt: "Online education has grown rapidly in recent years and many believe it will replace traditional classroom learning. To what extent do you agree or disagree with this prediction?" },
+  { tag: "health", tag_label: "Health", title: "Veganism and its impact on health", prompt: "An increasing number of people are adopting vegan or plant-based diets. Some argue this is beneficial for both personal health and the environment. To what extent do you agree with this view?" },
+  { tag: "social", tag_label: "Society", title: "Immigration and national identity", prompt: "Some people believe that high levels of immigration threaten the cultural identity of a country. Others argue that immigration enriches society. Discuss both views and give your own opinion." },
+  { tag: "economy", tag_label: "Economy", title: "The gender pay gap", prompt: "Despite legislation in many countries, women are still paid less than men for doing the same work. What are the causes of the gender pay gap and what measures can be taken to close it?" },
+  { tag: "technology", tag_label: "Technology", title: "Children and screen time", prompt: "There is growing concern about the amount of time children spend using smartphones, tablets, and computers. What are the potential effects of excessive screen time on children, and what can parents and schools do to address this issue?" },
+  { tag: "environment", tag_label: "Environment", title: "Deforestation: causes and solutions", prompt: "Deforestation is occurring at an alarming rate in many parts of the world. What are the main causes of deforestation, and what measures could be taken to reduce it?" },
+  { tag: "education", tag_label: "Education", title: "Standardised testing in schools", prompt: "Many schools rely heavily on standardised tests to assess student performance. Some argue this approach is effective, while others believe it places too much pressure on students and limits their creativity. Discuss both views and give your opinion." },
+  { tag: "social", tag_label: "Society", title: "Homelessness in cities", prompt: "Homelessness is a significant problem in many large cities around the world. What are the main causes of homelessness, and what policies could be introduced to reduce it?" },
+  { tag: "health", tag_label: "Health", title: "Healthcare: public or private?", prompt: "Some countries have a free public healthcare system, while in others people must pay for medical treatment. Discuss the advantages and disadvantages of both systems and give your own opinion about which is preferable." },
+  { tag: "economy", tag_label: "Economy", title: "Consumer society and materialism", prompt: "We live in a society where the consumption of goods is constantly encouraged. Some people believe this consumer culture has many benefits, while others argue it is harmful to individuals and society. Discuss both perspectives and give your view." },
+];
+
+let selectedTopic = null;
+let currentTopics = [];
+
+function shuffle(arr) {
+  let a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function generateTopics() {
+  const btn = document.getElementById('generateBtn');
+  const icon = document.getElementById('generateIcon');
+  icon.classList.add('spin');
+  btn.disabled = true;
+
+  setTimeout(() => {
+    currentTopics = shuffle(TOPIC_POOL).slice(0, 6);
+    renderTopics(currentTopics);
+    icon.classList.remove('spin');
+    btn.disabled = false;
+    selectedTopic = null;
+    document.getElementById('writingPanel').classList.remove('active');
+    document.getElementById('resultsPanel').classList.remove('active');
+  }, 400);
+}
+
+function renderTopics(topics) {
+  const grid = document.getElementById('topicsGrid');
+  grid.innerHTML = '';
+  topics.forEach((t, i) => {
+    const card = document.createElement('div');
+    card.className = 'topic-card';
+    card.dataset.idx = i;
+    card.innerHTML = `
+      <div class="topic-check">✓</div>
+      <div class="topic-tag tag-${t.tag}">${t.tag_label}</div>
+      <div class="topic-title">${t.title}</div>
+      <div class="topic-desc">${t.prompt.substring(0, 90)}…</div>
+    `;
+    card.addEventListener('click', () => selectTopic(i, card));
+    grid.appendChild(card);
+  });
+}
+
+function selectTopic(idx, card) {
+  document.querySelectorAll('.topic-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  selectedTopic = currentTopics[idx];
+  document.getElementById('selectedPrompt').textContent = selectedTopic.prompt;
+  document.getElementById('writingPanel').classList.add('active');
+  document.getElementById('essayArea').value = '';
+  updateWordCount();
+  document.getElementById('resultsPanel').classList.remove('active');
+  document.getElementById('errorMsg').classList.remove('active');
+  document.getElementById('writingPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function updateWordCount() {
+  const text = document.getElementById('essayArea').value.trim();
+  const words = text ? text.split(/\s+/).filter(w => w.length > 0).length : 0;
+  const el = document.getElementById('wordCount');
+  el.textContent = words;
+  el.className = words >= 250 ? 'wc-ok' : 'wc-warning';
+  document.getElementById('wordCount').closest('.word-count').lastChild.textContent =
+    words >= 250 ? ' ✓ Good length' : ' / 250 minimum';
+}
+
+async function checkEssay() {
+  const essay = document.getElementById('essayArea').value.trim();
+  if (!essay || essay.split(/\s+/).length < 50) {
+    showError('Please write at least 50 words before checking.');
+    return;
+  }
+  if (!selectedTopic) return;
+
+  document.getElementById('checkBtn').disabled = true;
+  document.getElementById('resultsPanel').classList.remove('active');
+  document.getElementById('errorMsg').classList.remove('active');
+  document.getElementById('loadingOverlay').classList.add('active');
+
+  const systemPrompt = `You are an expert IELTS examiner with 15 years of experience. You must evaluate IELTS Task 2 essays strictly and accurately according to the official four criteria. Always respond with ONLY valid JSON, no markdown, no extra text.
+
+Return a JSON object with this exact structure:
+{
+  "overall": 6.5,
+  "task_achievement": 6.5,
+  "coherence_cohesion": 6.0,
+  "lexical_resource": 6.5,
+  "grammatical_range": 6.0,
+  "overview": "Two-sentence overall assessment.",
+  "strengths": ["strength 1", "strength 2", "strength 3"],
+  "improvements": ["improvement 1", "improvement 2", "improvement 3"],
+  "errors": [
+    {"wrong": "original phrase", "right": "corrected phrase", "reason": "brief reason"},
+    {"wrong": "original phrase", "right": "corrected phrase", "reason": "brief reason"},
+    {"wrong": "original phrase", "right": "corrected phrase", "reason": "brief reason"}
+  ]
+}
+
+Band score rules (be strict and accurate):
+- 5.0: Very limited range, frequent errors, poor structure
+- 5.5: Limited but attempts to address task, noticeable errors
+- 6.0: Adequately addresses task, some errors, reasonable range
+- 6.5: Good response, minor errors, good range
+- 7.0: Good response, few errors, varied vocabulary
+- 7.5: Very good, very few errors, impressive range
+- 8.0: Excellent, near perfect, very sophisticated
+- Only award half bands (5.0, 5.5, 6.0, 6.5, 7.0, 7.5, 8.0, 8.5, 9.0)
+- Overall = average of 4 criteria, rounded to nearest 0.5
+- Be realistic: most learner essays score 5.5–7.0`;
+
+  const userMsg = `IELTS Task 2 Prompt: "${selectedTopic.prompt}"\n\nStudent Essay:\n${essay}`;
+
+  try {
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        system: systemPrompt,
+        messages: [{ role: "user", content: userMsg }]
+      })
+    });
+
+    if (!response.ok) throw new Error(`API error: ${response.status}`);
+
+    const data = await response.json();
+    const rawText = data.content?.map(b => b.text || '').join('') || '';
+
+    let result;
+    try {
+      const clean = rawText.replace(/```json|```/g, '').trim();
+      result = JSON.parse(clean);
+    } catch (e) {
+      throw new Error('Could not parse the AI response. Please try again.');
+    }
+
+    document.getElementById('loadingOverlay').classList.remove('active');
+    renderResults(result);
+  } catch (err) {
+    document.getElementById('loadingOverlay').classList.remove('active');
+    showError(err.message || 'Something went wrong. Please try again.');
+  }
+
+  document.getElementById('checkBtn').disabled = false;
+}
+
+function renderResults(r) {
+  document.getElementById('bandScore').textContent = r.overall?.toFixed(1) || '—';
+
+  const breakdown = document.getElementById('scoreBreakdown');
+  breakdown.innerHTML = `
+    <div class="score-item">
+      <div class="score-item-val">${(r.task_achievement||0).toFixed(1)}</div>
+      <div class="score-item-name">Task Achievement</div>
+      <div class="score-item-label">TA</div>
+    </div>
+    <div class="score-item">
+      <div class="score-item-val">${(r.coherence_cohesion||0).toFixed(1)}</div>
+      <div class="score-item-name">Coherence & Cohesion</div>
+      <div class="score-item-label">CC</div>
+    </div>
+    <div class="score-item">
+      <div class="score-item-val">${(r.lexical_resource||0).toFixed(1)}</div>
+      <div class="score-item-name">Lexical Resource</div>
+      <div class="score-item-label">LR</div>
+    </div>
+    <div class="score-item">
+      <div class="score-item-val">${(r.grammatical_range||0).toFixed(1)}</div>
+      <div class="score-item-name">Grammatical Range</div>
+      <div class="score-item-label">GR&A</div>
+    </div>
+  `;
+
+  const body = document.getElementById('feedbackBody');
+  const errors = (r.errors || []).map(e => `
+    <li class="error-item">
+      <div class="error-wrong">✗ ${e.wrong || ''}</div>
+      <div class="error-right">✓ ${e.right || ''}</div>
+      <div class="error-why">${e.reason || ''}</div>
+    </li>
+  `).join('');
+
+  const strengths = (r.strengths || []).map(s => `
+    <li class="strength-item"><div class="strength-dot"></div><span>${s}</span></li>
+  `).join('');
+
+  const improvements = (r.improvements || []).map(s => `
+    <li class="improve-item"><div class="improve-dot"></div><span>${s}</span></li>
+  `).join('');
+
+  body.innerHTML = `
+    <div class="feedback-section">
+      <div class="feedback-title">Overall Assessment</div>
+      <div class="feedback-text">${r.overview || ''}</div>
+    </div>
+    ${strengths ? `<div class="feedback-section">
+      <div class="feedback-title">Strengths</div>
+      <ul class="strength-list">${strengths}</ul>
+    </div>` : ''}
+    ${improvements ? `<div class="feedback-section">
+      <div class="feedback-title">Areas for Improvement</div>
+      <ul class="improve-list">${improvements}</ul>
+    </div>` : ''}
+    ${errors ? `<div class="feedback-section">
+      <div class="feedback-title">Language Corrections</div>
+      <ul class="error-list">${errors}</ul>
+    </div>` : ''}
+  `;
+
+  document.getElementById('resultsPanel').classList.add('active');
+  document.getElementById('resultsPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function showError(msg) {
+  const el = document.getElementById('errorMsg');
+  el.textContent = msg;
+  el.classList.add('active');
+}
+
+generateTopics();
+</script>
+</body>
+</html>

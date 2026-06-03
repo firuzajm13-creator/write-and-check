@@ -19,17 +19,9 @@
     --text-on-navy: #dce8f0;
     --text-on-teal: #e8f0f5;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--beige); color: var(--navy); min-height: 100vh; }
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--beige);
-    color: var(--navy);
-    min-height: 100vh;
-  }
-
-  /* HEADER */
   header {
     background: var(--navy);
     padding: 0 2rem;
@@ -42,80 +34,120 @@
     z-index: 100;
     border-bottom: 1px solid rgba(200,217,230,0.15);
   }
-  .logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.4rem;
-    color: var(--white);
-    letter-spacing: -0.01em;
-  }
+  .logo { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--white); letter-spacing: -0.01em; }
   .logo span { color: var(--sky); }
-  .header-badge {
-    background: var(--teal);
-    color: var(--text-on-teal);
-    font-size: 0.72rem;
+  .header-right { display: flex; align-items: center; gap: 0.75rem; }
+  .header-badge { background: var(--teal); color: var(--text-on-teal); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 14px; border-radius: 100px; }
+  .saved-btn {
+    background: transparent;
+    border: 1px solid rgba(200,217,230,0.35);
+    color: var(--sky);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
     font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
     padding: 5px 14px;
     border-radius: 100px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex; align-items: center; gap: 0.4rem;
   }
+  .saved-btn:hover { background: rgba(200,217,230,0.12); border-color: var(--sky); }
+  .saved-count { background: var(--sky); color: var(--navy); font-size: 0.7rem; font-weight: 700; width: 18px; height: 18px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; }
 
-  /* HERO */
-  .hero {
-    background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 100%);
-    color: white;
-    text-align: center;
-    padding: 3.5rem 2rem 3rem;
-  }
-  .hero h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(1.8rem, 4vw, 2.8rem);
-    font-weight: 700;
-    line-height: 1.2;
-    margin-bottom: 0.75rem;
-  }
-  .hero p {
-    font-size: 1rem;
-    opacity: 0.82;
-    max-width: 540px;
-    margin: 0 auto 1.8rem;
-    line-height: 1.6;
-    font-weight: 300;
-  }
-  .hero-stats {
-    display: flex;
-    justify-content: center;
-    gap: 2.5rem;
-    flex-wrap: wrap;
-  }
+  .hero { background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 100%); color: white; text-align: center; padding: 3.5rem 2rem 3rem; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; line-height: 1.2; margin-bottom: 0.75rem; }
+  .hero p { font-size: 1rem; opacity: 0.82; max-width: 540px; margin: 0 auto 1.8rem; line-height: 1.6; font-weight: 300; }
+  .hero-stats { display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap; }
   .stat { text-align: center; }
-  .stat-num {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.8rem;
-    font-weight: 600;
-    color: var(--sky);
-    display: block;
-  }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 600; color: var(--sky); display: block; }
   .stat-label { font-size: 0.78rem; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.08em; }
 
-  /* MAIN LAYOUT */
   .container { max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.5rem; }
 
-  /* TOPIC SECTION */
-  .section-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.35rem;
-    color: var(--navy);
-    margin-bottom: 0.3rem;
+  /* SAVED ESSAYS PANEL */
+  .saved-panel {
+    background: var(--white);
+    border-radius: 18px;
+    border: 1.5px solid var(--sky);
+    overflow: hidden;
+    margin-bottom: 2.5rem;
+    display: none;
+    animation: fadeUp 0.3s ease;
   }
+  .saved-panel.active { display: block; }
+  .saved-panel-header {
+    background: var(--navy);
+    color: white;
+    padding: 1.1rem 1.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .saved-panel-header h3 { font-family: 'Playfair Display', serif; font-size: 1rem; }
+  .close-saved {
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.6);
+    font-size: 1.3rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 2px 6px;
+  }
+  .close-saved:hover { color: white; }
+  .saved-empty { padding: 2rem; text-align: center; color: var(--teal); font-size: 0.88rem; }
+  .saved-list { display: flex; flex-direction: column; gap: 0; }
+  .saved-item {
+    padding: 1rem 1.6rem;
+    border-bottom: 1px solid var(--sky);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .saved-item:last-child { border-bottom: none; }
+  .saved-item:hover { background: #f5f9fc; }
+  .saved-item-info { flex: 1; min-width: 0; }
+  .saved-item-title { font-size: 0.88rem; font-weight: 600; color: var(--navy); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 0.2rem; }
+  .saved-item-meta { font-size: 0.75rem; color: var(--teal); display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+  .saved-item-band { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 600; color: var(--teal); min-width: 40px; text-align: center; }
+  .saved-item-band-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; color: #9aafbe; text-align: center; }
+  .saved-item-actions { display: flex; gap: 0.5rem; }
+  .btn-icon {
+    background: transparent;
+    border: 1px solid var(--sky);
+    border-radius: 8px;
+    padding: 5px 10px;
+    font-size: 0.75rem;
+    color: var(--teal);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn-icon:hover { background: var(--sky-light); border-color: var(--teal); color: var(--navy); }
+  .btn-icon.danger:hover { background: #fdf0f0; border-color: #c0392b; color: #c0392b; }
+
+  /* AUTOSAVE INDICATOR */
+  .autosave-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: #9aafbe;
+    padding: 0.5rem 1.6rem;
+    background: #f8fbfd;
+    border-bottom: 1px solid var(--sky);
+    min-height: 32px;
+    transition: color 0.3s;
+  }
+  .autosave-bar.saved { color: #27ae60; }
+  .autosave-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+  .section-title { font-family: 'Playfair Display', serif; font-size: 1.35rem; color: var(--navy); margin-bottom: 0.3rem; }
   .section-sub { font-size: 0.85rem; color: var(--teal); margin-bottom: 1.5rem; font-weight: 400; }
 
-  .topics-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1rem;
-    margin-bottom: 2.5rem;
-  }
+  .topics-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; margin-bottom: 2.5rem; }
 
   .topic-card {
     background: var(--white);
@@ -127,37 +159,14 @@
     position: relative;
     overflow: hidden;
   }
-  .topic-card::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 4px;
-    background: var(--sky);
-    transition: background 0.2s;
-  }
-  .topic-card:hover {
-    border-color: var(--teal);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(47,65,86,0.1);
-  }
+  .topic-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--sky); transition: background 0.2s; }
+  .topic-card:hover { border-color: var(--teal); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(47,65,86,0.1); }
   .topic-card:hover::before { background: var(--teal); }
-  .topic-card.selected {
-    border-color: var(--navy);
-    background: #f0f5f9;
-    box-shadow: 0 6px 20px rgba(47,65,86,0.14);
-  }
+  .topic-card.selected { border-color: var(--navy); background: #f0f5f9; box-shadow: 0 6px 20px rgba(47,65,86,0.14); }
   .topic-card.selected::before { background: var(--navy); }
+  .topic-card.has-draft::after { content: '● Draft'; position: absolute; bottom: 0.75rem; right: 0.9rem; font-size: 0.65rem; color: #e67e22; font-weight: 600; letter-spacing: 0.05em; }
 
-  .topic-tag {
-    display: inline-block;
-    font-size: 0.7rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    padding: 3px 10px;
-    border-radius: 100px;
-    margin-bottom: 0.6rem;
-  }
+  .topic-tag { display: inline-block; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 3px 10px; border-radius: 100px; margin-bottom: 0.6rem; }
   .tag-social { background: #dce8f0; color: var(--teal-dark); }
   .tag-technology { background: #e8edf2; color: var(--navy); }
   .tag-environment { background: #e0ede8; color: #2d5a42; }
@@ -165,312 +174,94 @@
   .tag-health { background: #ece0e0; color: #5a2d2d; }
   .tag-economy { background: #e0e4ed; color: #2d3a5a; }
 
-  .topic-title {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--navy);
-    line-height: 1.45;
-    margin-bottom: 0.5rem;
-  }
-  .topic-desc {
-    font-size: 0.78rem;
-    color: var(--teal);
-    line-height: 1.5;
-  }
-  .topic-check {
-    position: absolute;
-    top: 1rem; right: 1rem;
-    width: 22px; height: 22px;
-    background: var(--navy);
-    border-radius: 50%;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 12px;
-  }
+  .topic-title { font-size: 0.9rem; font-weight: 600; color: var(--navy); line-height: 1.45; margin-bottom: 0.5rem; }
+  .topic-desc { font-size: 0.78rem; color: var(--teal); line-height: 1.5; }
+  .topic-check { position: absolute; top: 1rem; right: 1rem; width: 22px; height: 22px; background: var(--navy); border-radius: 50%; display: none; align-items: center; justify-content: center; color: white; font-size: 12px; }
   .topic-card.selected .topic-check { display: flex; }
 
-  /* GENERATE MORE */
-  .generate-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: var(--navy);
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 10px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.15s;
-    margin-bottom: 2.5rem;
-  }
+  .generate-btn { display: flex; align-items: center; gap: 0.5rem; background: var(--navy); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: background 0.2s, transform 0.15s; margin-bottom: 2.5rem; }
   .generate-btn:hover { background: var(--teal); transform: translateY(-1px); }
   .generate-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
   .spin { animation: spin 0.8s linear infinite; display: inline-block; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* WRITING AREA */
-  .writing-panel {
-    background: var(--white);
-    border-radius: 18px;
-    border: 1.5px solid var(--sky);
-    overflow: hidden;
-    margin-bottom: 2rem;
-    display: none;
-  }
+  .writing-panel { background: var(--white); border-radius: 18px; border: 1.5px solid var(--sky); overflow: hidden; margin-bottom: 2rem; display: none; }
   .writing-panel.active { display: block; }
 
-  .writing-header {
-    background: var(--navy);
-    color: white;
-    padding: 1.2rem 1.6rem;
-  }
-  .writing-header h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.05rem;
-    margin-bottom: 0.4rem;
-  }
-  .writing-header p {
-    font-size: 0.8rem;
-    opacity: 0.7;
-    line-height: 1.5;
-  }
+  .writing-header { background: var(--navy); color: white; padding: 1.2rem 1.6rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
+  .writing-header h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; margin-bottom: 0.2rem; }
+  .writing-header p { font-size: 0.8rem; opacity: 0.7; line-height: 1.5; }
+  .revision-badge { background: rgba(200,217,230,0.2); border: 1px solid rgba(200,217,230,0.35); color: var(--sky); font-size: 0.72rem; padding: 4px 10px; border-radius: 100px; white-space: nowrap; }
 
-  .prompt-box {
-    background: #f0f5f9;
-    border-bottom: 1px solid var(--sky);
-    padding: 1.2rem 1.6rem;
-  }
-  .prompt-label {
-    font-size: 0.72rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--teal);
-    margin-bottom: 0.5rem;
-  }
-  .prompt-text {
-    font-size: 0.95rem;
-    color: var(--navy);
-    line-height: 1.65;
-    font-style: italic;
-  }
+  .prompt-box { background: #f0f5f9; border-bottom: 1px solid var(--sky); padding: 1.2rem 1.6rem; }
+  .prompt-label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--teal); margin-bottom: 0.5rem; }
+  .prompt-text { font-size: 0.95rem; color: var(--navy); line-height: 1.65; font-style: italic; }
 
-  .essay-textarea {
-    width: 100%;
-    min-height: 280px;
-    padding: 1.4rem 1.6rem;
-    border: none;
-    outline: none;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.95rem;
-    line-height: 1.8;
-    color: var(--navy);
-    resize: vertical;
-    background: white;
-  }
+  .essay-textarea { width: 100%; min-height: 280px; padding: 1.4rem 1.6rem; border: none; outline: none; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; line-height: 1.8; color: var(--navy); resize: vertical; background: white; }
 
-  .writing-footer {
-    padding: 1rem 1.6rem;
-    border-top: 1px solid var(--sky);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-  }
-  .word-count {
-    font-size: 0.82rem;
-    color: var(--teal);
-  }
+  .writing-footer { padding: 1rem 1.6rem; border-top: 1px solid var(--sky); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; }
+  .word-count { font-size: 0.82rem; color: var(--teal); }
   .word-count span { font-weight: 600; color: var(--navy); }
   .wc-warning { color: #c0392b; }
   .wc-ok { color: #27ae60; }
 
-  .check-btn {
-    background: var(--teal);
-    color: white;
-    border: none;
-    padding: 0.7rem 1.8rem;
-    border-radius: 10px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
+  .footer-right { display: flex; align-items: center; gap: 0.75rem; }
+  .clear-btn { background: transparent; border: 1px solid var(--sky); color: var(--teal); font-family: 'DM Sans', sans-serif; font-size: 0.82rem; padding: 0.55rem 1rem; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+  .clear-btn:hover { border-color: #c0392b; color: #c0392b; background: #fdf0f0; }
+
+  .check-btn { background: var(--teal); color: white; border: none; padding: 0.7rem 1.8rem; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.5rem; }
   .check-btn:hover { background: var(--navy); transform: translateY(-1px); }
   .check-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-  /* RESULTS PANEL */
-  .results-panel {
-    background: var(--white);
-    border-radius: 18px;
-    border: 1.5px solid var(--sky);
-    overflow: hidden;
-    display: none;
-    animation: fadeUp 0.4s ease;
-  }
+  .results-panel { background: var(--white); border-radius: 18px; border: 1.5px solid var(--sky); overflow: hidden; display: none; animation: fadeUp 0.4s ease; }
   .results-panel.active { display: block; }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 
-  .results-header {
-    background: var(--teal);
-    padding: 1.4rem 1.8rem;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
+  .results-header { background: var(--teal); padding: 1.4rem 1.8rem; color: white; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
   .results-header h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; }
+  .results-header-left { display: flex; flex-direction: column; gap: 0.3rem; }
+  .results-saved-note { font-size: 0.75rem; opacity: 0.8; }
 
-  .band-display {
-    text-align: center;
-  }
-  .band-score {
-    font-family: 'Playfair Display', serif;
-    font-size: 3rem;
-    font-weight: 700;
-    line-height: 1;
-    color: white;
-  }
+  .band-display { text-align: center; }
+  .band-score { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 700; line-height: 1; color: white; }
   .band-label { font-size: 0.72rem; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.1em; }
 
-  .score-breakdown {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1px;
-    background: var(--sky);
-    border-bottom: 1px solid var(--sky);
-  }
-  .score-item {
-    background: white;
-    padding: 1.1rem 1.4rem;
-    text-align: center;
-  }
-  .score-item-val {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.6rem;
-    color: var(--teal);
-    font-weight: 600;
-  }
+  .score-breakdown { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px; background: var(--sky); border-bottom: 1px solid var(--sky); }
+  .score-item { background: white; padding: 1.1rem 1.4rem; text-align: center; }
+  .score-item-val { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--teal); font-weight: 600; }
   .score-item-label { font-size: 0.75rem; color: var(--teal); text-transform: uppercase; letter-spacing: 0.07em; margin-top: 0.2rem; }
   .score-item-name { font-size: 0.82rem; color: var(--navy); font-weight: 500; margin-top: 0.1rem; }
 
   .feedback-body { padding: 1.6rem 1.8rem; }
-
   .feedback-section { margin-bottom: 1.8rem; }
   .feedback-section:last-child { margin-bottom: 0; }
-
-  .feedback-title {
-    font-size: 0.78rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.09em;
-    color: var(--teal);
-    margin-bottom: 0.75rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  .feedback-title::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--sky);
-  }
-
-  .feedback-text {
-    font-size: 0.92rem;
-    color: var(--navy);
-    line-height: 1.75;
-  }
+  .feedback-title { font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em; color: var(--teal); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+  .feedback-title::after { content: ''; flex: 1; height: 1px; background: var(--sky); }
+  .feedback-text { font-size: 0.92rem; color: var(--navy); line-height: 1.75; }
 
   .error-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
-  .error-item {
-    background: #fdf5f5;
-    border-left: 3px solid #c0392b;
-    border-radius: 0 8px 8px 0;
-    padding: 0.75rem 1rem;
-  }
+  .error-item { background: #fdf5f5; border-left: 3px solid #c0392b; border-radius: 0 8px 8px 0; padding: 0.75rem 1rem; }
   .error-wrong { font-size: 0.82rem; color: #c0392b; text-decoration: line-through; margin-bottom: 0.2rem; }
   .error-right { font-size: 0.85rem; color: var(--navy); font-weight: 500; margin-bottom: 0.25rem; }
   .error-why { font-size: 0.78rem; color: var(--teal); }
 
   .strength-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
-  .strength-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.6rem;
-    font-size: 0.88rem;
-    color: var(--navy);
-    line-height: 1.5;
-  }
-  .strength-dot {
-    width: 8px; height: 8px;
-    background: var(--teal);
-    border-radius: 50%;
-    margin-top: 6px;
-    flex-shrink: 0;
-  }
+  .strength-item { display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.88rem; color: var(--navy); line-height: 1.5; }
+  .strength-dot { width: 8px; height: 8px; background: var(--teal); border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
 
   .improve-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
-  .improve-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.6rem;
-    font-size: 0.88rem;
-    color: var(--navy);
-    line-height: 1.5;
-  }
-  .improve-dot {
-    width: 8px; height: 8px;
-    background: #e67e22;
-    border-radius: 50%;
-    margin-top: 6px;
-    flex-shrink: 0;
-  }
+  .improve-item { display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.88rem; color: var(--navy); line-height: 1.5; }
+  .improve-dot { width: 8px; height: 8px; background: #e67e22; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
 
-  /* Loading overlay */
-  .loading-overlay {
-    padding: 3rem;
-    text-align: center;
-    display: none;
-  }
+  .loading-overlay { padding: 3rem; text-align: center; display: none; }
   .loading-overlay.active { display: block; }
-  .loading-spinner {
-    width: 48px; height: 48px;
-    border: 3px solid var(--sky);
-    border-top-color: var(--teal);
-    border-radius: 50%;
-    animation: spin 0.9s linear infinite;
-    margin: 0 auto 1rem;
-  }
+  .loading-spinner { width: 48px; height: 48px; border: 3px solid var(--sky); border-top-color: var(--teal); border-radius: 50%; animation: spin 0.9s linear infinite; margin: 0 auto 1rem; }
   .loading-text { font-size: 0.9rem; color: var(--teal); }
   .loading-sub { font-size: 0.78rem; color: #9aafbe; margin-top: 0.3rem; }
 
-  .error-msg {
-    background: #fdf5f5;
-    border: 1px solid #f5c6c6;
-    border-radius: 10px;
-    padding: 1rem 1.2rem;
-    color: #c0392b;
-    font-size: 0.88rem;
-    margin: 1rem 1.8rem;
-    display: none;
-  }
+  .error-msg { background: #fdf5f5; border: 1px solid #f5c6c6; border-radius: 10px; padding: 1rem 1.2rem; color: #c0392b; font-size: 0.88rem; margin: 1rem 0; display: none; }
   .error-msg.active { display: block; }
 
-  /* Responsive */
   @media(max-width: 600px) {
     .hero { padding: 2.5rem 1.2rem 2rem; }
     .hero-stats { gap: 1.5rem; }
@@ -478,19 +269,25 @@
     .topics-grid { grid-template-columns: 1fr; }
     .score-breakdown { grid-template-columns: repeat(2, 1fr); }
     .results-header { flex-direction: column; align-items: flex-start; }
+    .header-right { gap: 0.5rem; }
   }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">Practice<span>    with Firuza</span></div>
-  <div class="header-badge">Task 2 Checker</div>
+  <div class="logo">IELTS<span>Ace</span></div>
+  <div class="header-right">
+    <button class="saved-btn" onclick="toggleSavedPanel()">
+      📂 My Essays <span class="saved-count" id="savedCount">0</span>
+    </button>
+    <div class="header-badge">Task 2</div>
+  </div>
 </header>
 
 <div class="hero">
   <h1>Master IELTS Writing<br>Task 2</h1>
-  <p>Choose a topic, write your essay, and get instant AI feedback with a detailed band score breakdown.</p>
+  <p>Choose a topic, write your essay, get instant AI feedback — your work is saved automatically.</p>
   <div class="hero-stats">
     <div class="stat"><span class="stat-num">∞</span><span class="stat-label">Topics</span></div>
     <div class="stat"><span class="stat-num">4</span><span class="stat-label">Criteria</span></div>
@@ -499,8 +296,18 @@
 </div>
 
 <div class="container">
+
+  <!-- SAVED ESSAYS -->
+  <div class="saved-panel" id="savedPanel">
+    <div class="saved-panel-header">
+      <h3>My Saved Essays</h3>
+      <button class="close-saved" onclick="toggleSavedPanel()">✕</button>
+    </div>
+    <div id="savedListContainer"></div>
+  </div>
+
   <div class="section-title">Choose a Topic</div>
-  <div class="section-sub">Select any topic below — or generate new ones</div>
+  <div class="section-sub">Select any topic — or generate new ones. Drafts are saved automatically.</div>
 
   <div class="topics-grid" id="topicsGrid"></div>
 
@@ -510,19 +317,26 @@
 
   <div class="writing-panel" id="writingPanel">
     <div class="writing-header">
-      <h3>Write Your Essay</h3>
-      <p>Aim for 250–300 words. Address the question fully. Structure: intro → body × 2 → conclusion.</p>
+      <div>
+        <h3>Write Your Essay</h3>
+        <p>Aim for 250–300 words. Intro → Body × 2 → Conclusion. Your draft saves as you type.</p>
+      </div>
+      <div class="revision-badge" id="revisionBadge" style="display:none"></div>
+    </div>
+    <div class="autosave-bar" id="autosaveBar">
+      <span class="autosave-dot"></span> <span id="autosaveText">Start typing — your draft will be saved automatically</span>
     </div>
     <div class="prompt-box">
       <div class="prompt-label">Your Prompt</div>
       <div class="prompt-text" id="selectedPrompt"></div>
     </div>
-    <textarea class="essay-textarea" id="essayArea" placeholder="Begin your essay here…&#10;&#10;Tip: Start with a clear introduction that paraphrases the question and states your position." oninput="updateWordCount()"></textarea>
+    <textarea class="essay-textarea" id="essayArea" placeholder="Begin your essay here…&#10;&#10;Tip: Start with a clear introduction that paraphrases the question and states your position." oninput="onEssayInput()"></textarea>
     <div class="writing-footer">
-      <div class="word-count">Words: <span id="wordCount" class="wc-warning">0</span> / 250 minimum</div>
-      <button class="check-btn" id="checkBtn" onclick="checkEssay()">
-        ✦ Check My Essay
-      </button>
+      <div class="word-count">Words: <span id="wordCount" class="wc-warning">0</span><span id="wcSuffix"> / 250 minimum</span></div>
+      <div class="footer-right">
+        <button class="clear-btn" onclick="clearDraft()">Clear Draft</button>
+        <button class="check-btn" id="checkBtn" onclick="checkEssay()">✦ Check My Essay</button>
+      </div>
     </div>
   </div>
 
@@ -536,7 +350,10 @@
 
   <div class="results-panel" id="resultsPanel">
     <div class="results-header">
-      <h3>Essay Feedback</h3>
+      <div class="results-header-left">
+        <h3>Essay Feedback</h3>
+        <div class="results-saved-note" id="resultsSavedNote"></div>
+      </div>
       <div class="band-display">
         <div class="band-score" id="bandScore">—</div>
         <div class="band-label">Overall Band</div>
@@ -548,6 +365,9 @@
 </div>
 
 <script>
+const STORAGE_KEY = 'ieltsace_essays';
+const DRAFT_KEY = 'ieltsace_draft';
+
 const TOPIC_POOL = [
   { tag: "technology", tag_label: "Technology", title: "Social media and loneliness", prompt: "Many people believe that social media has increased feelings of loneliness and isolation in modern society. To what extent do you agree or disagree with this view? Give reasons for your answer and include any relevant examples from your own knowledge or experience." },
   { tag: "education", tag_label: "Education", title: "University education: right or privilege?", prompt: "Some people think that university education should be free for all students, while others believe that students should pay tuition fees. Discuss both views and give your own opinion." },
@@ -583,11 +403,201 @@ const TOPIC_POOL = [
 
 let selectedTopic = null;
 let currentTopics = [];
+let autosaveTimer = null;
 
+/* ── STORAGE HELPERS ── */
+function loadEssays() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch { return []; }
+}
+function saveEssays(arr) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); } catch(e) { console.warn('Storage full', e); }
+}
+function loadDraft() {
+  try { return JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null'); } catch { return null; }
+}
+function saveDraft(data) {
+  try { localStorage.setItem(DRAFT_KEY, JSON.stringify(data)); } catch(e) {}
+}
+function clearDraftStorage() {
+  try { localStorage.removeItem(DRAFT_KEY); } catch(e) {}
+}
+
+/* ── SAVED COUNT BADGE ── */
+function updateSavedCount() {
+  const essays = loadEssays();
+  document.getElementById('savedCount').textContent = essays.length;
+}
+
+/* ── SAVED PANEL ── */
+function toggleSavedPanel() {
+  const panel = document.getElementById('savedPanel');
+  const isOpen = panel.classList.contains('active');
+  if (isOpen) { panel.classList.remove('active'); return; }
+  renderSavedPanel();
+  panel.classList.add('active');
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function renderSavedPanel() {
+  const essays = loadEssays();
+  const container = document.getElementById('savedListContainer');
+  if (!essays.length) {
+    container.innerHTML = '<div class="saved-empty">No saved essays yet. Write and check an essay to save it here.</div>';
+    return;
+  }
+  const sorted = [...essays].sort((a,b) => b.savedAt - a.savedAt);
+  container.innerHTML = '<div class="saved-list">' + sorted.map(e => `
+    <div class="saved-item" onclick="loadSavedEssay('${e.id}')">
+      <div class="saved-item-info">
+        <div class="saved-item-title">${escHtml(e.topicTitle)}</div>
+        <div class="saved-item-meta">
+          <span>${new Date(e.savedAt).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'})}</span>
+          <span>${e.wordCount} words</span>
+          ${e.revisions > 1 ? `<span>${e.revisions} revision${e.revisions>1?'s':''}</span>` : ''}
+        </div>
+      </div>
+      ${e.band ? `<div><div class="saved-item-band">${e.band}</div><div class="saved-item-band-label">Band</div></div>` : ''}
+      <div class="saved-item-actions" onclick="event.stopPropagation()">
+        <button class="btn-icon" onclick="loadSavedEssay('${e.id}')">Edit</button>
+        <button class="btn-icon danger" onclick="deleteEssay('${e.id}')">✕</button>
+      </div>
+    </div>
+  `).join('') + '</div>';
+}
+
+function loadSavedEssay(id) {
+  const essays = loadEssays();
+  const entry = essays.find(e => e.id === id);
+  if (!entry) return;
+
+  // Find the topic in pool or use saved
+  const topic = TOPIC_POOL.find(t => t.prompt === entry.prompt) || { tag: entry.tag || 'social', tag_label: entry.tag_label || '', title: entry.topicTitle, prompt: entry.prompt };
+  selectedTopic = topic;
+
+  document.getElementById('selectedPrompt').textContent = topic.prompt;
+  document.getElementById('essayArea').value = entry.essay;
+  updateWordCount();
+
+  const badge = document.getElementById('revisionBadge');
+  badge.textContent = `Revision ${entry.revisions || 1}`;
+  badge.style.display = 'inline-block';
+
+  document.getElementById('writingPanel').classList.add('active');
+  document.getElementById('resultsPanel').classList.remove('active');
+  document.getElementById('errorMsg').classList.remove('active');
+
+  if (entry.feedback) {
+    renderResults(entry.feedback, false);
+  }
+
+  saveDraft({ topicPrompt: topic.prompt, topicTitle: topic.title, tag: topic.tag, tag_label: topic.tag_label, essay: entry.essay, essayId: id });
+  setAutosaveNote('Loaded saved essay — continue editing');
+
+  document.getElementById('savedPanel').classList.remove('active');
+  document.getElementById('writingPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function deleteEssay(id) {
+  if (!confirm('Delete this essay? This cannot be undone.')) return;
+  const essays = loadEssays().filter(e => e.id !== id);
+  saveEssays(essays);
+  updateSavedCount();
+  renderSavedPanel();
+}
+
+/* ── AUTOSAVE ── */
+function onEssayInput() {
+  updateWordCount();
+  clearTimeout(autosaveTimer);
+  setAutosaveNote('Saving…');
+  autosaveTimer = setTimeout(() => {
+    autosaveDraft();
+    setAutosaveNote('Draft saved', true);
+  }, 800);
+}
+
+function autosaveDraft() {
+  if (!selectedTopic) return;
+  const essay = document.getElementById('essayArea').value;
+  const draft = loadDraft() || {};
+  saveDraft({
+    ...draft,
+    topicPrompt: selectedTopic.prompt,
+    topicTitle: selectedTopic.title,
+    tag: selectedTopic.tag,
+    tag_label: selectedTopic.tag_label,
+    essay
+  });
+}
+
+function setAutosaveNote(msg, saved=false) {
+  const bar = document.getElementById('autosaveBar');
+  const txt = document.getElementById('autosaveText');
+  txt.textContent = msg;
+  bar.className = 'autosave-bar' + (saved ? ' saved' : '');
+  if (saved) setTimeout(() => { bar.classList.remove('saved'); }, 2000);
+}
+
+function clearDraft() {
+  if (!confirm('Clear the current draft? Your saved essays are not affected.')) return;
+  document.getElementById('essayArea').value = '';
+  updateWordCount();
+  clearDraftStorage();
+  document.getElementById('resultsPanel').classList.remove('active');
+  setAutosaveNote('Draft cleared');
+}
+
+/* ── SAVE ESSAY WITH FEEDBACK ── */
+function saveEssayWithFeedback(essay, feedback) {
+  const essays = loadEssays();
+  const draft = loadDraft() || {};
+  const existingId = draft.essayId;
+  const existing = existingId ? essays.find(e => e.id === existingId) : null;
+  const wordCount = essay.trim().split(/\s+/).filter(w=>w).length;
+
+  if (existing) {
+    existing.essay = essay;
+    existing.feedback = feedback;
+    existing.band = feedback.overall?.toFixed(1);
+    existing.wordCount = wordCount;
+    existing.savedAt = Date.now();
+    existing.revisions = (existing.revisions || 1) + 1;
+    saveEssays(essays);
+    saveDraft({ ...draft, essayId: existing.id });
+    const badge = document.getElementById('revisionBadge');
+    badge.textContent = `Revision ${existing.revisions}`;
+    badge.style.display = 'inline-block';
+    return existing.id;
+  } else {
+    const id = 'e_' + Date.now();
+    const entry = {
+      id,
+      topicTitle: selectedTopic.title,
+      prompt: selectedTopic.prompt,
+      tag: selectedTopic.tag,
+      tag_label: selectedTopic.tag_label,
+      essay,
+      feedback,
+      band: feedback.overall?.toFixed(1),
+      wordCount,
+      savedAt: Date.now(),
+      revisions: 1
+    };
+    essays.push(entry);
+    saveEssays(essays);
+    saveDraft({ ...draft, essayId: id });
+    const badge = document.getElementById('revisionBadge');
+    badge.textContent = 'Revision 1';
+    badge.style.display = 'inline-block';
+    return id;
+  }
+}
+
+/* ── TOPICS ── */
 function shuffle(arr) {
   let a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
+  for (let i = a.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i+1));
     [a[i], a[j]] = [a[j], a[i]];
   }
   return a;
@@ -598,7 +608,6 @@ function generateTopics() {
   const icon = document.getElementById('generateIcon');
   icon.classList.add('spin');
   btn.disabled = true;
-
   setTimeout(() => {
     currentTopics = shuffle(TOPIC_POOL).slice(0, 6);
     renderTopics(currentTopics);
@@ -611,11 +620,13 @@ function generateTopics() {
 }
 
 function renderTopics(topics) {
+  const essays = loadEssays();
+  const savedPrompts = new Set(essays.map(e => e.prompt));
   const grid = document.getElementById('topicsGrid');
   grid.innerHTML = '';
   topics.forEach((t, i) => {
     const card = document.createElement('div');
-    card.className = 'topic-card';
+    card.className = 'topic-card' + (savedPrompts.has(t.prompt) ? ' has-draft' : '');
     card.dataset.idx = i;
     card.innerHTML = `
       <div class="topic-check">✓</div>
@@ -632,12 +643,31 @@ function selectTopic(idx, card) {
   document.querySelectorAll('.topic-card').forEach(c => c.classList.remove('selected'));
   card.classList.add('selected');
   selectedTopic = currentTopics[idx];
+
   document.getElementById('selectedPrompt').textContent = selectedTopic.prompt;
   document.getElementById('writingPanel').classList.add('active');
-  document.getElementById('essayArea').value = '';
-  updateWordCount();
   document.getElementById('resultsPanel').classList.remove('active');
   document.getElementById('errorMsg').classList.remove('active');
+
+  // Restore saved essay for this topic if exists
+  const essays = loadEssays();
+  const existing = essays.find(e => e.prompt === selectedTopic.prompt);
+  if (existing) {
+    document.getElementById('essayArea').value = existing.essay;
+    const badge = document.getElementById('revisionBadge');
+    badge.textContent = `Revision ${existing.revisions || 1}`;
+    badge.style.display = 'inline-block';
+    saveDraft({ topicPrompt: selectedTopic.prompt, topicTitle: selectedTopic.title, tag: selectedTopic.tag, tag_label: selectedTopic.tag_label, essay: existing.essay, essayId: existing.id });
+    setAutosaveNote('Previous essay loaded — ready to revise', true);
+    if (existing.feedback) renderResults(existing.feedback, false);
+  } else {
+    document.getElementById('essayArea').value = '';
+    document.getElementById('revisionBadge').style.display = 'none';
+    saveDraft({ topicPrompt: selectedTopic.prompt, topicTitle: selectedTopic.title, tag: selectedTopic.tag, tag_label: selectedTopic.tag_label, essay: '' });
+    setAutosaveNote('Start typing — your draft will be saved automatically');
+  }
+
+  updateWordCount();
   document.getElementById('writingPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
@@ -647,10 +677,10 @@ function updateWordCount() {
   const el = document.getElementById('wordCount');
   el.textContent = words;
   el.className = words >= 250 ? 'wc-ok' : 'wc-warning';
-  document.getElementById('wordCount').closest('.word-count').lastChild.textContent =
-    words >= 250 ? ' ✓ Good length' : ' / 250 minimum';
+  document.getElementById('wcSuffix').textContent = words >= 250 ? ' ✓ Good length' : ' / 250 minimum';
 }
 
+/* ── CHECK ESSAY ── */
 async function checkEssay() {
   const essay = document.getElementById('essayArea').value.trim();
   if (!essay || essay.split(/\s+/).length < 50) {
@@ -664,9 +694,9 @@ async function checkEssay() {
   document.getElementById('errorMsg').classList.remove('active');
   document.getElementById('loadingOverlay').classList.add('active');
 
-  const systemPrompt = `You are an expert IELTS examiner with 15 years of experience. You must evaluate IELTS Task 2 essays strictly and accurately according to the official four criteria. Always respond with ONLY valid JSON, no markdown, no extra text.
+  const systemPrompt = `You are an expert IELTS examiner with 15 years of experience. Evaluate IELTS Task 2 essays strictly. Respond with ONLY valid JSON, no markdown, no extra text.
 
-Return a JSON object with this exact structure:
+Return exactly:
 {
   "overall": 6.5,
   "task_achievement": 6.5,
@@ -683,19 +713,7 @@ Return a JSON object with this exact structure:
   ]
 }
 
-Band score rules (be strict and accurate):
-- 5.0: Very limited range, frequent errors, poor structure
-- 5.5: Limited but attempts to address task, noticeable errors
-- 6.0: Adequately addresses task, some errors, reasonable range
-- 6.5: Good response, minor errors, good range
-- 7.0: Good response, few errors, varied vocabulary
-- 7.5: Very good, very few errors, impressive range
-- 8.0: Excellent, near perfect, very sophisticated
-- Only award half bands (5.0, 5.5, 6.0, 6.5, 7.0, 7.5, 8.0, 8.5, 9.0)
-- Overall = average of 4 criteria, rounded to nearest 0.5
-- Be realistic: most learner essays score 5.5–7.0`;
-
-  const userMsg = `IELTS Task 2 Prompt: "${selectedTopic.prompt}"\n\nStudent Essay:\n${essay}`;
+Band rules: 5.0=very limited/frequent errors, 5.5=limited/noticeable errors, 6.0=adequate/some errors, 6.5=good/minor errors, 7.0=good/few errors/varied vocab, 7.5=very good/very few errors, 8.0=excellent/near perfect. Use only half-bands (5.0–9.0). Overall = average of 4 criteria rounded to nearest 0.5. Be realistic: most learners score 5.5–7.0.`;
 
   try {
     const response = await fetch("https://api.anthropic.com/v1/messages", {
@@ -705,26 +723,30 @@ Band score rules (be strict and accurate):
         model: "claude-sonnet-4-20250514",
         max_tokens: 1000,
         system: systemPrompt,
-        messages: [{ role: "user", content: userMsg }]
+        messages: [{ role: "user", content: `Prompt: "${selectedTopic.prompt}"\n\nEssay:\n${essay}` }]
       })
     });
 
     if (!response.ok) throw new Error(`API error: ${response.status}`);
-
     const data = await response.json();
-    const rawText = data.content?.map(b => b.text || '').join('') || '';
+    const rawText = data.content?.map(b => b.text||'').join('') || '';
 
     let result;
     try {
-      const clean = rawText.replace(/```json|```/g, '').trim();
-      result = JSON.parse(clean);
-    } catch (e) {
-      throw new Error('Could not parse the AI response. Please try again.');
+      result = JSON.parse(rawText.replace(/```json|```/g,'').trim());
+    } catch(e) {
+      throw new Error('Could not parse AI response. Please try again.');
     }
 
     document.getElementById('loadingOverlay').classList.remove('active');
-    renderResults(result);
-  } catch (err) {
+
+    // Save essay + feedback
+    saveEssayWithFeedback(essay, result);
+    updateSavedCount();
+    renderTopics(currentTopics); // refresh draft indicators
+
+    renderResults(result, true);
+  } catch(err) {
     document.getElementById('loadingOverlay').classList.remove('active');
     showError(err.message || 'Something went wrong. Please try again.');
   }
@@ -732,67 +754,27 @@ Band score rules (be strict and accurate):
   document.getElementById('checkBtn').disabled = false;
 }
 
-function renderResults(r) {
+/* ── RENDER RESULTS ── */
+function renderResults(r, justSaved=false) {
   document.getElementById('bandScore').textContent = r.overall?.toFixed(1) || '—';
+  document.getElementById('resultsSavedNote').textContent = justSaved ? '✓ Essay and feedback saved' : 'Loaded from saved essays';
 
-  const breakdown = document.getElementById('scoreBreakdown');
-  breakdown.innerHTML = `
-    <div class="score-item">
-      <div class="score-item-val">${(r.task_achievement||0).toFixed(1)}</div>
-      <div class="score-item-name">Task Achievement</div>
-      <div class="score-item-label">TA</div>
-    </div>
-    <div class="score-item">
-      <div class="score-item-val">${(r.coherence_cohesion||0).toFixed(1)}</div>
-      <div class="score-item-name">Coherence & Cohesion</div>
-      <div class="score-item-label">CC</div>
-    </div>
-    <div class="score-item">
-      <div class="score-item-val">${(r.lexical_resource||0).toFixed(1)}</div>
-      <div class="score-item-name">Lexical Resource</div>
-      <div class="score-item-label">LR</div>
-    </div>
-    <div class="score-item">
-      <div class="score-item-val">${(r.grammatical_range||0).toFixed(1)}</div>
-      <div class="score-item-name">Grammatical Range</div>
-      <div class="score-item-label">GR&A</div>
-    </div>
+  document.getElementById('scoreBreakdown').innerHTML = `
+    <div class="score-item"><div class="score-item-val">${(r.task_achievement||0).toFixed(1)}</div><div class="score-item-name">Task Achievement</div><div class="score-item-label">TA</div></div>
+    <div class="score-item"><div class="score-item-val">${(r.coherence_cohesion||0).toFixed(1)}</div><div class="score-item-name">Coherence & Cohesion</div><div class="score-item-label">CC</div></div>
+    <div class="score-item"><div class="score-item-val">${(r.lexical_resource||0).toFixed(1)}</div><div class="score-item-name">Lexical Resource</div><div class="score-item-label">LR</div></div>
+    <div class="score-item"><div class="score-item-val">${(r.grammatical_range||0).toFixed(1)}</div><div class="score-item-name">Grammatical Range</div><div class="score-item-label">GR&A</div></div>
   `;
 
-  const body = document.getElementById('feedbackBody');
-  const errors = (r.errors || []).map(e => `
-    <li class="error-item">
-      <div class="error-wrong">✗ ${e.wrong || ''}</div>
-      <div class="error-right">✓ ${e.right || ''}</div>
-      <div class="error-why">${e.reason || ''}</div>
-    </li>
-  `).join('');
+  const errors = (r.errors||[]).map(e=>`<li class="error-item"><div class="error-wrong">✗ ${escHtml(e.wrong||'')}</div><div class="error-right">✓ ${escHtml(e.right||'')}</div><div class="error-why">${escHtml(e.reason||'')}</div></li>`).join('');
+  const strengths = (r.strengths||[]).map(s=>`<li class="strength-item"><div class="strength-dot"></div><span>${escHtml(s)}</span></li>`).join('');
+  const improvements = (r.improvements||[]).map(s=>`<li class="improve-item"><div class="improve-dot"></div><span>${escHtml(s)}</span></li>`).join('');
 
-  const strengths = (r.strengths || []).map(s => `
-    <li class="strength-item"><div class="strength-dot"></div><span>${s}</span></li>
-  `).join('');
-
-  const improvements = (r.improvements || []).map(s => `
-    <li class="improve-item"><div class="improve-dot"></div><span>${s}</span></li>
-  `).join('');
-
-  body.innerHTML = `
-    <div class="feedback-section">
-      <div class="feedback-title">Overall Assessment</div>
-      <div class="feedback-text">${r.overview || ''}</div>
-    </div>
-    ${strengths ? `<div class="feedback-section">
-      <div class="feedback-title">Strengths</div>
-      <ul class="strength-list">${strengths}</ul>
-    </div>` : ''}
-    ${improvements ? `<div class="feedback-section">
-      <div class="feedback-title">Areas for Improvement</div>
-      <ul class="improve-list">${improvements}</ul>
-    </div>` : ''}
-    ${errors ? `<div class="feedback-section">
-      <div class="feedback-title">Language Corrections</div>
-      <ul class="error-list">${errors}</ul>
-    </div>` : ''}
+  document.getElementById('feedbackBody').innerHTML = `
+    <div class="feedback-section"><div class="feedback-title">Overall Assessment</div><div class="feedback-text">${escHtml(r.overview||'')}</div></div>
+    ${strengths?`<div class="feedback-section"><div class="feedback-title">Strengths</div><ul class="strength-list">${strengths}</ul></div>`:''}
+    ${improvements?`<div class="feedback-section"><div class="feedback-title">Areas for Improvement</div><ul class="improve-list">${improvements}</ul></div>`:''}
+    ${errors?`<div class="feedback-section"><div class="feedback-title">Language Corrections</div><ul class="error-list">${errors}</ul></div>`:''}
   `;
 
   document.getElementById('resultsPanel').classList.add('active');
@@ -805,7 +787,38 @@ function showError(msg) {
   el.classList.add('active');
 }
 
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── RESTORE DRAFT ON LOAD ── */
+function restoreDraftOnLoad() {
+  const draft = loadDraft();
+  if (!draft || !draft.topicPrompt) return;
+  const topic = TOPIC_POOL.find(t => t.prompt === draft.topicPrompt) || { tag: draft.tag||'social', tag_label: draft.tag_label||'', title: draft.topicTitle||'Custom', prompt: draft.topicPrompt };
+  selectedTopic = topic;
+  document.getElementById('selectedPrompt').textContent = topic.prompt;
+  document.getElementById('essayArea').value = draft.essay || '';
+  updateWordCount();
+  document.getElementById('writingPanel').classList.add('active');
+  if (draft.essayId) {
+    const essays = loadEssays();
+    const saved = essays.find(e=>e.id===draft.essayId);
+    if (saved) {
+      const badge = document.getElementById('revisionBadge');
+      badge.textContent = `Revision ${saved.revisions||1}`;
+      badge.style.display = 'inline-block';
+      if (saved.feedback) renderResults(saved.feedback, false);
+    }
+  }
+  setAutosaveNote('Draft restored from last session', true);
+}
+
+/* ── INIT ── */
 generateTopics();
+updateSavedCount();
+restoreDraftOnLoad();
 </script>
 </body>
 </html>
+
